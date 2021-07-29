@@ -17,11 +17,11 @@ namespace utils {
         auto               attach(const std::string &process_name) -> bool;
         [[nodiscard]] auto get_module(const std::string &module_name) const -> MODULEENTRY32;
         auto               alloc_mem(SIZE_T size) -> void *;
+        auto               create_remote_thread(LPTHREAD_START_ROUTINE address, void *memory) -> void;
         template <typename T>
         auto write(const uintptr_t address, T value) -> bool {
             SIZE_T bytes;
-            WriteProcessMemory(_handle, reinterpret_cast<LPVOID>(address), &value, sizeof(T),
-                               &bytes);
+            WriteProcessMemory(_handle, reinterpret_cast<LPVOID>(address), &value, sizeof(T), &bytes);
             return bytes == sizeof(T);
         }
 
