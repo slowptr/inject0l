@@ -16,15 +16,6 @@ namespace utils {
 
         auto               attach(const std::string& process_name) -> bool;
         [[nodiscard]] auto get_module(const std::string& module_name) const -> MODULEENTRY32;
-        [[nodiscard]] auto get_module_base(const std::string& module_name) const -> uint32_t;
-
-        template <typename T>
-        auto read(const uintptr_t address) -> T {
-            T temp_val;
-            ReadProcessMemory(_handle, reinterpret_cast<LPCVOID>(address), &temp_val, sizeof(T),
-                              nullptr);
-            return temp_val;
-        }
 
         template <typename T>
         auto write(const uintptr_t address, T value) -> bool {
@@ -33,8 +24,6 @@ namespace utils {
                                &bytes);
             return bytes == sizeof(T);
         }
-
-        auto find_pattern(MODULEENTRY32 module, std::string_view pattern) -> uintptr_t;
 
         [[nodiscard]] auto get_pid() const -> uint32_t;
         [[nodiscard]] auto get_process_name() const -> std::string;
