@@ -1,12 +1,12 @@
 #ifndef EXTERNAL_TEMPLATE_C_PROCESS_H
 #define EXTERNAL_TEMPLATE_C_PROCESS_H
 
-#include <Windows.h>
 #include <TlHelp32.h>
+#include <Windows.h>
 
 #include <cstdint>
-#include <string>
 #include <memory>
+#include <string>
 
 namespace utils {
     class c_process {
@@ -14,9 +14,9 @@ namespace utils {
         c_process() = default;
         ~c_process();
 
-        auto               attach(const std::string& process_name) -> bool;
-        [[nodiscard]] auto get_module(const std::string& module_name) const -> MODULEENTRY32;
-
+        auto               attach(const std::string &process_name) -> bool;
+        [[nodiscard]] auto get_module(const std::string &module_name) const -> MODULEENTRY32;
+        auto               alloc_mem(SIZE_T size) -> void *;
         template <typename T>
         auto write(const uintptr_t address, T value) -> bool {
             SIZE_T bytes;
@@ -30,7 +30,7 @@ namespace utils {
 
        private:
         uint32_t    _pid = 0;
-        void*       _handle{};
+        void       *_handle{};
         std::string _process_name;
     };
     extern std::unique_ptr<c_process> g_process;
