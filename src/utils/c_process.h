@@ -1,8 +1,8 @@
 #ifndef EXTERNAL_TEMPLATE_C_PROCESS_H
 #define EXTERNAL_TEMPLATE_C_PROCESS_H
 
-#include <TlHelp32.h>
 #include <Windows.h>
+#include <TlHelp32.h>
 
 #include <cstdint>
 #include <memory>
@@ -17,6 +17,7 @@ namespace utils {
         auto               attach(const std::string &process_name) -> bool;
         [[nodiscard]] auto get_module(const std::string &module_name) const -> MODULEENTRY32;
         auto               alloc_mem(SIZE_T size) -> void *;
+        auto               free_mem(void *memory) -> void;
         auto               create_remote_thread(LPTHREAD_START_ROUTINE address, void *memory) -> void;
         template <typename T>
         auto write(const uintptr_t address, T value) -> bool {
@@ -33,7 +34,6 @@ namespace utils {
         void       *_handle{};
         std::string _process_name;
     };
-    extern std::unique_ptr<c_process> g_process;
 }  // namespace utils
 
 #endif  // EXTERNAL_TEMPLATE_C_PROCESS_H

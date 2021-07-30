@@ -40,8 +40,7 @@ namespace utils {
                 "utils::c_process::get_module_base(): "
                 "module_name is empty.");
 
-        const auto snapshot =
-            CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, _pid);
+        const auto snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE | TH32CS_SNAPMODULE32, _pid);
 
         if (!snapshot)
             throw std::runtime_error(
@@ -63,14 +62,10 @@ namespace utils {
     auto c_process::alloc_mem(SIZE_T size) -> void* {
         return VirtualAllocEx(_handle, nullptr, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
     }
+    auto c_process::free_mem(void* memory) -> void { VirtualFreeEx(_handle, memory, 0, MEM_RELEASE); }
     auto c_process::create_remote_thread(LPTHREAD_START_ROUTINE address, void* memory) -> void {
-        CreateRemoteThread(_handle, 0, 0, address, memory, 0, 0);
+        CreateRemoteThread(_handle, nullptr, 0, address, memory, 0, 0);
     }
     auto c_process::get_pid() const -> uint32_t { return _pid; }
     auto c_process::get_process_name() const -> std::string { return _process_name; }
-
-    std::unique_ptr<c_process> g_process =
-        std::make_unique<c_process>();  // Clang-Tidy: Initialization of 'g_process'
-                                        // with static storage duration may throw an
-                                        // exception that cannot be caught
 }  // namespace utils
