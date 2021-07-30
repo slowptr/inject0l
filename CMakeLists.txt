@@ -3,4 +3,4 @@ project(inject0l)
 
 set(CMAKE_CXX_STANDARD 23)
 
-add_executable(inject0l src/main.cpp src/utils/c_process.h src/utils/c_log.h src/utils/c_log.cpp src/utils/c_process.cpp)
+add_executable(inject0l src/main.cpp src/c_injector.h src/c_injector.cpp src/utils/c_process.h src/utils/c_log.h src/utils/c_log.cpp src/utils/c_process.cpp)
