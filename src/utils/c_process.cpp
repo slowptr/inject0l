@@ -63,8 +63,8 @@ namespace utils {
         return VirtualAllocEx(_handle, nullptr, size, MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
     }
     auto c_process::free_mem(void* memory) -> void { VirtualFreeEx(_handle, memory, 0, MEM_RELEASE); }
-    auto c_process::create_remote_thread(LPTHREAD_START_ROUTINE address, void* memory) -> void {
-        CreateRemoteThread(_handle, nullptr, 0, address, memory, 0, 0);
+    auto c_process::create_remote_thread(LPTHREAD_START_ROUTINE address, void* memory) -> void* {
+        return CreateRemoteThread(_handle, nullptr, 0, address, memory, 0, 0);
     }
     auto c_process::get_pid() const -> uint32_t { return _pid; }
     auto c_process::get_process_name() const -> std::string { return _process_name; }
