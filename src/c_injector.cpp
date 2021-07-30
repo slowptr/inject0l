@@ -1,4 +1,5 @@
 #include "c_injector.h"
+#include "utils/c_log.h"
 #include <thread>
 
 auto c_injector::inject(const std::string& process_name, const std::string& dll_path, bool wait_for_process)
@@ -11,7 +12,7 @@ auto c_injector::inject(const std::string& process_name, const std::string& dll_
     char dll[MAX_PATH];
     GetFullPathNameA(dll_path.c_str(), MAX_PATH, dll, nullptr);
 
-    // utils::g_log->info("c_injector::inject(): got dll path.");
+    utils::g_log->info("c_injector::inject(): got dll path.");
 
     if (wait_for_process) {
         while (!_process.attach(process_name)) {
@@ -20,7 +21,7 @@ auto c_injector::inject(const std::string& process_name, const std::string& dll_
     } else
         _process.attach(process_name);
 
-    // utils::g_log->info("c_injector::inject(): process attached.");
+    utils::g_log->info("c_injector::inject(): process attached.");
 
     if (_process.get_process_name().empty())
         throw std::runtime_error(
@@ -39,21 +40,21 @@ auto c_injector::inject(const std::string& process_name, const std::string& dll_
             "c_injector::inject(): "
             "couldn't allocate memory.");
 
-    // utils::g_log->info("c_injector::inject(): memory allocated.");
+    utils::g_log->info("c_injector::inject(): memory allocated.");
 
     if (!_process.write<decltype(dll)>(allocated_mem, dll))
         throw std::runtime_error(
             "c_injector::inject(): "
             "couldn't write dll name into allocated memory.");
 
-    // utils::g_log->info("c_injector::inject(): dll name written into memory.");
+    utils::g_log->info("c_injector::inject(): dll name written into memory.");
 
     if (!_process.create_remote_thread(reinterpret_cast<LPTHREAD_START_ROUTINE>(loadlibrary), allocated_mem))
         throw std::runtime_error(
             "c_injector::inject(): "
             "couldn't create remote loadlibrary thread.");
 
-    // utils::g_log->info("c_injector::inject(): loadlibrary executed.");
+    utils::g_log->info("c_injector::inject(): loadlibrary executed.");
 
     _process.free_mem(allocated_mem);
     return true;
