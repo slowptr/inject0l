@@ -22,13 +22,13 @@ namespace utils {
         template <typename T>
         auto write(void *address, T value) -> bool {
             SIZE_T bytes;
-            WriteProcessMemory(_handle, address, &value, sizeof(T), &bytes);
+            WriteProcessMemory(_handle, address, value, sizeof(T), &bytes);
             return bytes == sizeof(T);
         }
         template <typename T>
         auto write(const uintptr_t address, T value) -> bool {
             SIZE_T bytes;
-            WriteProcessMemory(_handle, reinterpret_cast<LPVOID>(address), &value, sizeof(T), &bytes);
+            WriteProcessMemory(_handle, reinterpret_cast<LPVOID>(address), value, sizeof(T), &bytes);
             return bytes == sizeof(T);
         }
 
