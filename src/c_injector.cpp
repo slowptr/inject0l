@@ -1,5 +1,4 @@
 #include "c_injector.h"
-#include "utils/c_log.h"
 #include <thread>
 
 auto c_injector::inject(const std::string& process_name, const std::string& dll_path, bool wait_for_process)
@@ -28,13 +27,13 @@ auto c_injector::inject(const std::string& process_name, const std::string& dll_
             "c_injector::inject(): "
             "couldn't attach to process.");
 
-    auto loadlibrary = GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
+    const auto loadlibrary = GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
     if (!loadlibrary)
         throw std::runtime_error(
             "c_injector::inject(): "
             "couldn't get LoadLibraryA address.");
 
-    auto allocated_mem = _process.alloc_mem(strlen(dll));
+    const auto allocated_mem = _process.alloc_mem(strlen(dll));
     if (!allocated_mem)
         throw std::runtime_error(
             "c_injector::inject(): "
